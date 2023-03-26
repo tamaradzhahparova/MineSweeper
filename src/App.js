@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Board from "./components/Game/Board";
 import "./App.css";
+import { Settings } from "./components/Settings/Settings";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="one" element={<PageOne />} />
-        <Route path="two" element={<PageTwo />} />
+        <Route path="/" element={<Settings />} />
+        {/*<Route path="two" element={<PageTwo />} />*/}
       </Routes>
     </BrowserRouter>
 

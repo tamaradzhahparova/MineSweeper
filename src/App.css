@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background: url(https://www.designyourway.net/blog/wp-content/uploads/2018/09/photo-1516642898673-edd1ced.jpg) no-repeat center center fixed;
     background-size: cover;
@@ -44,10 +48,6 @@ body {
     text-shadow: 2px 1px rgb(154, 255, 255);
 }
 
-.settings {
-    display: flex;
-    flex-direction: column;
-}
 
 .level {
     display: flex;
@@ -66,4 +66,13 @@ body {
     background-color: transparent;
     border: 2px solid white;
     cursor: pointer;
+    font-size: 24px;
+}
+
+.nameInput {
+    width: 100%;
+    background-color: transparent;
+    border: 2px solid white;
+    padding: 10px;
+    font-size: 24px;
 }
