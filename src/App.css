@@ -1,0 +1,69 @@
+body {
+    background: url(https://www.designyourway.net/blog/wp-content/uploads/2018/09/photo-1516642898673-edd1ced.jpg) no-repeat center center fixed;
+    background-size: cover;
+}
+
+.App {
+    text-align: center;
+}
+
+.App-header {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.mainTitle {
+    margin-bottom: 20px;
+}
+
+.App-link {
+    color: #61dafb;
+}
+
+.aligned {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.parent {
+    display: flex;
+    gap: 50px;
+}
+
+.heading {
+    text-align: center;
+    color: white;
+    font-size: 35px;
+    text-shadow: 2px 1px rgb(154, 255, 255);
+}
+
+.settings {
+    display: flex;
+    flex-direction: column;
+}
+
+.level {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 60px;
+}
+
+.subTitle {
+    color: white;
+    font-size: 24px;
+}
+
+.button {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    background-color: transparent;
+    border: 2px solid white;
+    cursor: pointer;
+}
