@@ -4,6 +4,7 @@ export default function CreateBoard(row, col, mines){
   // Tracking the minelocation 
     let mineLocation = [];
     // Create blank board
+
   
     for (let x = 0; x < row; x++) {
       let subCol = [];

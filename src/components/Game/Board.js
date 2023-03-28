@@ -4,42 +4,54 @@ import { revealed } from "../../utils/Reveal";
 import Cell from "./Cell";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { easyLevel, hardLevel, mediumLevel } from "../../utils/constants";
 import { Timer } from "./Timer";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Board() {
+
+  const level = useSelector(state => state.settings.level);
+  const name = useSelector(state => state.settings.name);
+  let navigate = useNavigate();
+
   const [grid, setGrid] = useState([]);
-  const [nonMinecount, setNonMinecount] = useState(0);
+  const [nonMinecount, setNonMinecount] = useState(level?.[2]);
   const [mineLocation, setmineLocation] = useState([]);
   const [isTimerWorking, setIsTimerWorking] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
 
-  const [level, setLevel] = useState(easyLevel);
-  const [duration, setDuration] = useState(10);
+  useEffect(() => {
+    if (!name || !level) {
+      return navigate("/");
+    }
+    freshBoard();
+  }, []);
 
   const style = {
     display: "flex",
     flexDirection: "row",
     width: "fit-content",
-    color: "white",
+    color: "white"
   };
-  useEffect(() => {
-    freshBoard();
-  }, [level]);
 
   // Making freshboard atstart
   const freshBoard = () => {
-    const newBoard = CreateBoard(...level);
-    setNonMinecount(level[0] * level[1] - level[2]);
+    const newBoard = CreateBoard(...level?.slice(0, -1));
     setmineLocation(newBoard.mineLocation);
     setGrid(newBoard.board);
     setResetTimer(false);
+    setNonMinecount(level[2]);
   };
   const updateFlag = (e, x, y) => {
     e.preventDefault();
+
     // deep copy of the object
     let newGrid = JSON.parse(JSON.stringify(grid));
+    if (newGrid[x][y].value === "X" && newGrid[x][y].flagged === false) {
+      setNonMinecount(prev => --prev);
+    }
     newGrid[x][y].flagged = true;
+
     setGrid(newGrid);
   };
 
@@ -47,6 +59,22 @@ function Board() {
     freshBoard();
     setResetTimer(true);
   };
+
+  useState(() => {
+    if (nonMinecount === 0) {
+      toast.success("Wohoo!!,You won", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
+      setTimeout(newfresh, 500);
+      setResetTimer(true);
+    }
+  }, [nonMinecount]);
 
   const lostHandle = (reason) => {
     toast.dark(
@@ -60,7 +88,7 @@ function Board() {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined
       }
     );
 
@@ -81,7 +109,7 @@ function Board() {
       }
       setGrid(newGrid);
     }
-    if (nonMinecount === 1) {
+    if (nonMinecount === 0) {
       toast.success("Wohoo!!,You won", {
         position: "top-center",
         autoClose: 1000,
@@ -89,50 +117,22 @@ function Board() {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-        progress: undefined,
+        progress: undefined
       });
       setTimeout(newfresh, 500);
       setResetTimer(true);
     } else {
-      let revealedboard = revealed(newGrid, x, y, nonMinecount);
-      console.log(revealedboard);
+      let revealedboard = revealed(newGrid, x, y);
       setGrid(revealedboard.arr);
-      setNonMinecount(revealedboard.newNonMines);
-    }
-  };
-
-  const changeLevel = (level) => {
-    switch (level) {
-      case "easy":
-        setLevel(easyLevel);
-        setDuration(10);
-        break;
-      case "medium":
-        setLevel(mediumLevel);
-        setDuration(40);
-        break;
-      case "hard":
-        setLevel(hardLevel);
-        setDuration(100);
     }
   };
 
   return (
     <div className="parent">
-      <button className="button" onClick={newfresh}>
-        Перезапустить игру
-      </button>
-
-      <div>
-        <h3
-          style={{
-            color: "white",
-            textAlign: "center",
-            fontSize: "30px",
-            margin: "0px",
-          }}
+      <div className="board">
+        <h3 className="counter"
         >
-          Ячеек без мин - {nonMinecount}
+          Мин не помечено - {nonMinecount}
         </h3>
         <ToastContainer></ToastContainer>
         {grid.map((singlerow, index1) => {
@@ -154,7 +154,7 @@ function Board() {
         })}
 
         <Timer
-          duration={duration}
+          duration={level?.[3]}
           isTimerWorking={isTimerWorking}
           setIsTimerWorking={setIsTimerWorking}
           setResetTimer={setResetTimer}
@@ -162,6 +162,14 @@ function Board() {
           lostHandle={lostHandle}
         />
       </div>
+
+      <button className="button" onClick={newfresh}>
+        Перезапустить игру
+      </button>
+
+      <button className="button" onClick={() => navigate("/")}>
+        Вернуться к настройкам
+      </button>
     </div>
   );
 }

@@ -37,8 +37,8 @@ body {
 }
 
 .parent {
-    display: flex;
-    gap: 50px;
+   max-width: 400px;
+    margin: 0 auto;
 }
 
 .heading {
@@ -48,31 +48,25 @@ body {
     text-shadow: 2px 1px rgb(154, 255, 255);
 }
 
-
-.level {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 60px;
-}
-
-.subTitle {
-    color: white;
-    font-size: 24px;
-}
-
-.button {
+button {
     padding: 10px 20px;
     margin-bottom: 10px;
     background-color: transparent;
     border: 2px solid white;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 18px;
 }
 
-.nameInput {
-    width: 100%;
-    background-color: transparent;
-    border: 2px solid white;
-    padding: 10px;
-    font-size: 24px;
+.board {
+    margin-bottom: 40px;
 }
+
+.button {
+    width: 100%;
+}
+
+.counter {
+    color: white;
+    font-size: 22px;
+}
+
