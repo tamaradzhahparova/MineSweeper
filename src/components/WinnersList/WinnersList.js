@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import s from "./WinnersList.module.css";
+import { useNavigate } from "react-router-dom";
 
 export const WinnersList = () => {
   const [winners, setWinners] = useState([]);
+  let navigate = useNavigate();
 
   useEffect(() => {
 
@@ -21,12 +23,21 @@ export const WinnersList = () => {
 
   }, []);
 
-  return <ul className={s.listWrapper}>
-    {winners.length > 0 ? winners.map((item, index) => <li className={s.item}>
-      <span>{index + 1}.</span>
-      {`${item.name} ${item.time}sec`}
-    </li>) : <div className={s.empty}>
-      У нас пока нет победителей :)
-    </div>}
-  </ul>;
+  return <>
+    <button onClick={() => navigate('/')}>
+      вернуться к списку настроек
+    </button>
+
+    <ul className={s.listWrapper}>
+      {winners.length > 0 ? winners.map((item, index) => <li className={s.item}>
+        <span>{index + 1}.</span>
+        {`${item.name} ${item.time}sec`}
+      </li>) : <div>
+        У нас пока нет победителей :)
+      </div>}
+    </ul>;
+
+  </>
+
+
 };
