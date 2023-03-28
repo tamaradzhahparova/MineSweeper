@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   level: null,
   name: "",
-  bestResults: []
+  winners: []
 };
 
 export const settingsSlice = createSlice({
@@ -15,10 +15,13 @@ export const settingsSlice = createSlice({
     },
     setName: (state, action) => {
       state.name = action.payload;
+    },
+    setWinner: (state, action) => {
+      state.winners = [...state.winners, action.payload]
     }
   }
 });
 
-export const { setLevel, setName } = settingsSlice.actions;
+export const { setLevel, setName, setWinner } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

@@ -38,7 +38,7 @@ export const Settings = () => {
   const setDifficulty = (value) => {
     switch (value) {
       case "easy":
-        dispatch(setLevel([8, 8, 12, 10]));
+        dispatch(setLevel([8, 8, 5, 10]));
         break;
       case "medium":
         dispatch(setLevel([16, 16, 20, 40]));
@@ -72,7 +72,7 @@ export const Settings = () => {
       </div>
 
       <div className={styles.buttons}>
-        <button>
+        <button onClick={() => navigate('winners')}>
           Таблица лидеров
         </button>
         <button onClick={handleStart}>

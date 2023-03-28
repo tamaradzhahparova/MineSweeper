@@ -2,8 +2,6 @@ export const revealed = (arr, x, y) => {
 
   let show = [];
   show.push(arr[x][y]);
-
-  console.log('z nen')
   while (show.length !== 0) {
     let one = show.pop();
     let i = one.x;

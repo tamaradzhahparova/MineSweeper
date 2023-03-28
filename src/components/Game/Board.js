@@ -5,20 +5,24 @@ import Cell from "./Cell";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Timer } from "./Timer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setWinner } from "../../store/settingsSlice";
 
 function Board() {
 
   const level = useSelector(state => state.settings.level);
   const name = useSelector(state => state.settings.name);
+
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [grid, setGrid] = useState([]);
   const [nonMinecount, setNonMinecount] = useState(level?.[2]);
   const [mineLocation, setmineLocation] = useState([]);
   const [isTimerWorking, setIsTimerWorking] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
+  const [currentTime, setCurrentTime] = useState();
 
   useEffect(() => {
     if (!name || !level) {
@@ -42,6 +46,13 @@ function Board() {
     setResetTimer(false);
     setNonMinecount(level[2]);
   };
+
+  const getWinnerTime = (time) => {
+    const commonTime = level[3] * 60;
+    const spentTime = time[0] * 60 + time[1];
+    return commonTime - spentTime;
+  };
+
   const updateFlag = (e, x, y) => {
     e.preventDefault();
 
@@ -60,19 +71,25 @@ function Board() {
     setResetTimer(true);
   };
 
-  useState(() => {
+  const winHandle = () => {
+    toast.success("Wohoo!!,You won", {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    });
+    setTimeout(newfresh, 500);
+    setResetTimer(true);
+    dispatch(setWinner({ name: name, time: currentTime }));
+    localStorage.setItem(name, getWinnerTime(currentTime));
+  };
+
+  useEffect(() => {
     if (nonMinecount === 0) {
-      toast.success("Wohoo!!,You won", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      });
-      setTimeout(newfresh, 500);
-      setResetTimer(true);
+      winHandle();
     }
   }, [nonMinecount]);
 
@@ -91,7 +108,6 @@ function Board() {
         progress: undefined
       }
     );
-
     setResetTimer(true);
     setTimeout(newfresh, 500);
   };
@@ -110,17 +126,7 @@ function Board() {
       setGrid(newGrid);
     }
     if (nonMinecount === 0) {
-      toast.success("Wohoo!!,You won", {
-        position: "top-center",
-        autoClose: 1000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      });
-      setTimeout(newfresh, 500);
-      setResetTimer(true);
+      winHandle();
     } else {
       let revealedboard = revealed(newGrid, x, y);
       setGrid(revealedboard.arr);
@@ -160,6 +166,7 @@ function Board() {
           setResetTimer={setResetTimer}
           resetTimer={resetTimer}
           lostHandle={lostHandle}
+          setCurrentTime={setCurrentTime}
         />
       </div>
 
