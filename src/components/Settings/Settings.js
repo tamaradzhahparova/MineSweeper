@@ -13,12 +13,16 @@ export const Settings = () => {
     dispatch(setName(e));
   };
 
+  const isEmpty = (str) => {
+    return str.trim() === "";
+  };
+
   const handleStart = () => {
     if (!name && !level) {
       return alert("Пожалуйста, введите имя и выберите сложность!");
     }
 
-    if (!name) {
+    if (!name || isEmpty(name)) {
       return alert("Пожалуйста, введите имя");
     }
 
