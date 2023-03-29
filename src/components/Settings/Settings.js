@@ -72,7 +72,7 @@ export const Settings = () => {
       </div>
 
       <div className={styles.buttons}>
-        <button onClick={() => navigate('winners')}>
+        <button onClick={() => navigate("winners")}>
           Таблица лидеров
         </button>
         <button onClick={handleStart}>

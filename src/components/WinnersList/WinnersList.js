@@ -7,9 +7,7 @@ export const WinnersList = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
-
     const result = [];
-
     for (let key in localStorage) {
       if (!localStorage.hasOwnProperty(key)) {
         continue;
@@ -19,12 +17,12 @@ export const WinnersList = () => {
         time: localStorage.getItem(key)
       });
     }
-    setWinners(result.sort((a, b) => a.time - b.time));
+    setWinners(result.sort((a, b) => a.time - b.time).slice(0, 10));
 
   }, []);
 
   return <>
-    <button onClick={() => navigate('/')}>
+    <button onClick={() => navigate("/")}>
       вернуться к списку настроек
     </button>
 
@@ -35,9 +33,10 @@ export const WinnersList = () => {
       </li>) : <div>
         У нас пока нет победителей :)
       </div>}
-    </ul>;
+    </ul>
+    ;
 
-  </>
+  </>;
 
 
 };
